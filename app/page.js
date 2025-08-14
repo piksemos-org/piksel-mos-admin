@@ -1,69 +1,119 @@
-'use client'; // Baris ini wajib ada untuk halaman interaktif
+'use client';
 
 import { useState } from 'react';
-import { supabase } from '../lib/supabaseClient'; // Mengimpor koneksi Supabase
+import { supabase } from '../lib/supabaseClient';
 
 export default function LoginPage() {
-  // Mirip seperti TextEditingController di Flutter, untuk menyimpan input
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Ini adalah fungsi yang akan dijalankan saat tombol "Masuk" diklik
-  async function handleLogin() {
-    setLoading(true); // Mulai loading
-    setError(null); // Bersihkan pesan error lama
+  async function handleLogin(e) {
+    // Mencegah form untuk me-refresh halaman
+    e.preventDefault(); 
     
+    setLoading(true);
+    setError(null);
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       });
-
-      if (error) {
-        throw error; // Jika Supabase memberi error, lemparkan agar ditangkap di 'catch'
-      }
-
-      // Jika tidak ada error, arahkan ke halaman dashboard
-      window.location.href = '/dashboard'; // Halaman ini akan kita buat di tahap selanjutnya
-
+      if (error) throw error;
+      window.location.href = '/dashboard';
     } catch (error) {
-      // Jika terjadi error, simpan pesannya untuk ditampilkan ke pengguna
       setError(error.message);
     } finally {
-      setLoading(false); // Hentikan loading, baik sukses maupun gagal
+      setLoading(false);
     }
   }
 
-  // Ini adalah tampilan UI-nya, mirip seperti widget build() di Flutter
-  return (
-    <div style={{ padding: '50px', maxWidth: '400px', margin: 'auto', fontFamily: 'sans-serif' }}>
-      <h1>Admin Login</h1>
-      <p>Masuk untuk mengelola konten Piksel Mos.</p>
-      
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{ width: '100%', padding: '10px', marginBottom: '10px', boxSizing: 'border-box' }}
-      />
-      
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ width: '100%', padding: '10px', marginBottom: '20px', boxSizing: 'border-box' }}
-      />
-      
-      <button onClick={handleLogin} disabled={loading} style={{ width: '100%', padding: '12px', cursor: 'pointer' }}>
-        {loading ? 'Memproses...' : 'Masuk'}
-      </button>
+  // Objek untuk styling (CSS-in-JS) agar lebih rapi
+  const styles = {
+    page: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      backgroundColor: '#f0f2f5',
+      fontFamily: 'sans-serif',
+    },
+    card: {
+      padding: '40px',
+      backgroundColor: 'white',
+      borderRadius: '8px',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+      width: '100%',
+      maxWidth: '400px',
+    },
+    title: {
+      textAlign: 'center',
+      marginBottom: '10px',
+      color: '#333',
+    },
+    subtitle: {
+      textAlign: 'center',
+      marginBottom: '30px',
+      color: '#666',
+    },
+    input: {
+      width: '100%',
+      padding: '12px',
+      marginBottom: '15px',
+      boxSizing: 'border-box',
+      border: '1px solid #ddd',
+      borderRadius: '4px',
+    },
+    button: {
+      width: '100%',
+      padding: '12px',
+      cursor: 'pointer',
+      backgroundColor: '#069494', // Warna Teal Anda
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      fontWeight: 'bold',
+      fontSize: '16px',
+    },
+    error: {
+      color: 'red',
+      marginTop: '15px',
+      textAlign: 'center',
+    },
+  };
 
-      {/* Bagian ini akan menampilkan pesan error jika login gagal */}
-      {error && <p style={{ color: 'red', marginTop: '15px' }}>{error}</p>}
+  return (
+    <div style={styles.page}>
+      <div style={styles.card}>
+        <h1 style={styles.title}>Piksel Mos</h1>
+        <p style={styles.subtitle}>Admin Panel</p>
+        
+        {/* Menggunakan <form> untuk best practice */}
+        <form onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={styles.input}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={styles.input}
+            required
+          />
+          <button type="submit" disabled={loading} style={styles.button}>
+            {loading ? 'Memproses...' : 'Masuk'}
+          </button>
+        </form>
+
+        {error && <p style={styles.error}>{error}</p>}
+      </div>
     </div>
   );
 }
