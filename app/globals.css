@@ -26,3 +26,16 @@ nav ul li a:hover {
   background-color: rgba(6, 148, 148, 0.2); /* Warna Teal transparan */
   color: #ffffff;
 }
+
+/* Menghilangkan margin & padding default */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Style untuk link menu sidebar saat di-hover */
+.sidebar-link:hover {
+  background-color: rgba(6, 148, 148, 0.2) !important; /* Warna Teal transparan */
+  color: #ffffff !important;
+}

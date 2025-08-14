@@ -1,4 +1,3 @@
-// app/dashboard/page.js
 'use client';
 
 export default function DashboardHomePage() {
@@ -8,7 +7,6 @@ export default function DashboardHomePage() {
       <p>
         Gunakan menu navigasi di sebelah kiri untuk mengelola konten aplikasi Piksel Mos.
       </p>
-      {/* Dashboard utama sekarang bersih dan siap diisi widget lain nanti */}
     </div>
   );
 }

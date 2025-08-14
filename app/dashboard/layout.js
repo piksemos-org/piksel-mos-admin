@@ -1,4 +1,3 @@
-// app/dashboard/layout.js
 import Sidebar from '../components/Sidebar';
 
 export default function DashboardLayout({ children }) {
@@ -7,20 +6,25 @@ export default function DashboardLayout({ children }) {
       display: 'flex',
       flexDirection: 'row',
     },
+    // Memberi ruang kosong di kiri seukuran sidebar
+    contentContainer: {
+      paddingLeft: '250px', // Sesuaikan dengan lebar sidebar saat terbuka
+      width: '100%',
+      transition: 'padding-left 0.3s ease-in-out',
+    },
     mainContent: {
-      flexGrow: 1, // Mengisi sisa ruang
       padding: '20px',
-      height: '100vh',
-      overflowY: 'auto', // Membuat konten bisa di-scroll
     },
   };
 
   return (
     <div style={styles.layout}>
       <Sidebar />
-      <main style={styles.mainContent}>
-        {children} {/* Di sinilah konten halaman akan ditampilkan */}
-      </main>
+      <div style={styles.contentContainer} id="content-container">
+         <main style={styles.mainContent}>
+            {children}
+         </main>
+      </div>
     </div>
   );
 }

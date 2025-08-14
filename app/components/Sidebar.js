@@ -3,14 +3,12 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-// Impor ikon dari library react-icons
 import { FiHome, FiFileText, FiBox, FiUsers, FiSettings, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const [userCount, setUserCount] = useState(0);
 
-  // Daftar menu baru dengan ikon profesional
   const menuItems = [
     { name: 'Dashboard', path: '/dashboard', icon: <FiHome /> },
     { name: 'Manajemen Postingan', path: '/dashboard/posts', icon: <FiFileText /> },
@@ -18,8 +16,7 @@ export default function Sidebar() {
     { name: 'Manajemen Pengguna', path: '/dashboard/users', icon: <FiUsers /> },
     { name: 'Pengaturan', path: '/dashboard/settings', icon: <FiSettings /> },
   ];
-  
-  // Ambil data jumlah pengguna saat komponen dimuat
+
   useEffect(() => {
     async function fetchUserCount() {
       const { count } = await supabase
@@ -32,17 +29,19 @@ export default function Sidebar() {
     fetchUserCount();
   }, []);
 
-
   const styles = {
     sidebar: {
       width: isOpen ? '250px' : '80px',
-      backgroundColor: '#1a202c',
+      backgroundColor: '#1f2937', // Warna gelap yang lebih modern
       color: 'white',
-      transition: 'width 0.3s',
+      transition: 'width 0.3s ease-in-out',
       height: '100vh',
       display: 'flex',
       flexDirection: 'column',
-      padding: '10px',
+      padding: '15px',
+      position: 'fixed', // Agar tetap di tempat saat konten di-scroll
+      top: 0,
+      left: 0,
     },
     toggleButton: {
       textAlign: 'right',
@@ -58,8 +57,8 @@ export default function Sidebar() {
       borderRadius: '8px',
       marginBottom: '8px',
       textDecoration: 'none',
-      color: '#a0aec0', // Warna ikon dan teks menu
-      transition: 'background-color 0.2s',
+      color: '#d1d5db',
+      transition: 'background-color 0.2s, color 0.2s',
     },
     menuText: {
         marginLeft: '15px',
@@ -69,7 +68,7 @@ export default function Sidebar() {
         transition: 'opacity 0.2s',
     },
     statsContainer: {
-        marginTop: 'auto', // Mendorong statistik ke bawah
+        marginTop: 'auto',
         padding: '15px',
         backgroundColor: 'rgba(255, 255, 255, 0.05)',
         borderRadius: '8px',
@@ -90,10 +89,10 @@ export default function Sidebar() {
         {isOpen ? <FiChevronLeft /> : <FiChevronRight />}
       </div>
       <nav>
-        <ul>
+        <ul style={{ padding: 0 }}>
           {menuItems.map((item) => (
-            <li key={item.name} style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-              <Link href={item.path} style={styles.menuLink}>
+            <li key={item.name} style={{ listStyle: 'none' }}>
+              <Link href={item.path} style={styles.menuLink} className="sidebar-link">
                 <span style={{ fontSize: '22px' }}>{item.icon}</span>
                 <span style={styles.menuText}>{item.name}</span>
               </Link>
@@ -101,7 +100,6 @@ export default function Sidebar() {
           ))}
         </ul>
       </nav>
-      {/* Widget Statistik Pengguna dipindahkan ke sini */}
       <div style={styles.statsContainer}>
           {isOpen ? (
               <>
