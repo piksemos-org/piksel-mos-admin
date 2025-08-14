@@ -11,6 +11,7 @@ export default function Sidebar() {
   const menuItems = [
     { name: 'Dashboard', path: '/dashboard', icon: '🏠' },
     { name: 'Manajemen Postingan', path: '/dashboard/posts', icon: '📰' },
+    { name: 'Manajemen Material', path: '/dashboard/materials', icon: '📦' },
     { name: 'Manajemen Pengguna', path: '/dashboard/users', icon: '👥' },
     { name: 'Pengaturan', path: '/dashboard/settings', icon: '⚙️' },
   ];
